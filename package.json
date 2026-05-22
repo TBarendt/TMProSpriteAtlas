@@ -1,7 +1,7 @@
 {
 	"name": "com.tbarendt.tmprospriteatlas",
-	"displayName": "TextMeshPro Sprite Atlas Support",
-	"description": "TextMeshPro Sprite Atlas Support",
+	"displayName": "TextMesh Pro/TextCore Sprite Atlas Support",
+	"description": "TextMesh Pro/TextCore Sprite Atlas Support",
 	"version": "1.0.4",
 	"unity": "2002.3",
 	"license": "MIT",
