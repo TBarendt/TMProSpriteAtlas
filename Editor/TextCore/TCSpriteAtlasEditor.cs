@@ -21,28 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //------------------------------------------------------------------------------
-using System.Reflection;
 using UnityEditor;
+using UnityEditor.TextCore.Text;
 
 
-namespace UnityEngine.TextCore 
+namespace UnityEngine.TextCore
 {
 	[CustomEditor(typeof(TCSpriteAtlas))]
-	public class TCSpriteAssetImporterEditor : Editor
+	public class TCSpriteAssetImporterEditor : TextSpriteAssetEditor
 	{
-		//--------------------------------------------------------------------------
-		// Reflection
-		//--------------------------------------------------------------------------
-		private Editor _textSpriteAssetEditor;
-
-		public void OnEnable() {
-			_textSpriteAssetEditor = Editor.CreateEditor(targets, typeof(UnityEditor.TextCore.Text.TextSettingsEditor).Assembly
-				.GetType("UnityEditor.TextCore.Text.TextSpriteAssetEditor"));
-			_textSpriteAssetEditor.GetType().GetMethod(nameof(OnEnable)).Invoke(_textSpriteAssetEditor, null);
-		}
-
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI() {
 			if(GUILayout.Button(new GUIContent("Update from SpriteAtlas")))
 			{
 				var asset = target as TCSpriteAtlas;
@@ -50,7 +38,7 @@ namespace UnityEngine.TextCore
 				EditorUtility.SetDirty(target);
 				return;
 			}
-			_textSpriteAssetEditor.OnInspectorGUI();
+			base.OnInspectorGUI();
 		}
 	}
 }
