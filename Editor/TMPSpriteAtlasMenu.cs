@@ -28,29 +28,29 @@ using UnityEngine.U2D;
 
 namespace TMPro
 {
-public static class TMPSpriteAssetMenu
-{
-	//--------------------------------------------------------------------------
-	// Create Sprite Asset
-	//--------------------------------------------------------------------------
-	[MenuItem("Assets/Create/TextMeshPro/SpriteAtlas Asset", true, 5000)]
-	private static bool CreateAssetValidate() => Selection.activeObject is SpriteAtlas;
-	[MenuItem("Assets/Create/TextMeshPro/SpriteAtlas Asset", false, 5000)]
-	private static void CreateAsset()
+	public static class TMPSpriteAssetMenu
 	{
-		// Get the selected SpriteAtlas
-		var spriteAtlas = (SpriteAtlas)Selection.activeObject;
-		var spriteAtlasPath = AssetDatabase.GetAssetPath(spriteAtlas);
-
-		// Create or load a asset
-		var spriteAsset = AssetDatabase.LoadAssetAtPath<TMPSpriteAtlas>(Path.GetDirectoryName(spriteAtlasPath) + "/" + spriteAtlas.name + "_TMPro.asset");
-		if(spriteAsset == null)
+		//--------------------------------------------------------------------------
+		// Create Sprite Asset
+		//--------------------------------------------------------------------------
+		[MenuItem("Assets/Create/TextMeshPro/SpriteAtlas Asset", true, 5000)]
+		private static bool CreateAssetValidate() => Selection.activeObject is SpriteAtlas;
+		[MenuItem("Assets/Create/TextMeshPro/SpriteAtlas Asset", false, 5000)]
+		private static void CreateAsset()
 		{
-			spriteAsset = ScriptableObject.CreateInstance<TMPSpriteAtlas>();
-			AssetDatabase.CreateAsset(spriteAsset, Path.GetDirectoryName(spriteAtlasPath) + "/" + spriteAtlas.name + "_TMPro.asset" );
+			// Get the selected SpriteAtlas
+			var spriteAtlas = (SpriteAtlas)Selection.activeObject;
+			var spriteAtlasPath = AssetDatabase.GetAssetPath(spriteAtlas);
+
+			// Create or load a asset
+			var spriteAsset = AssetDatabase.LoadAssetAtPath<TMPSpriteAtlas>(Path.GetDirectoryName(spriteAtlasPath) + "/" + spriteAtlas.name + "_TMPro.asset");
+			if(spriteAsset == null)
+			{
+				spriteAsset = ScriptableObject.CreateInstance<TMPSpriteAtlas>();
+				AssetDatabase.CreateAsset(spriteAsset, Path.GetDirectoryName(spriteAtlasPath) + "/" + spriteAtlas.name + "_TMPro.asset" );
+			}
+			spriteAsset.spriteAtlas = spriteAtlas;
+			spriteAsset.UpdateSpriteData();
 		}
-		spriteAsset.spriteAtlas = spriteAtlas;
-		spriteAsset.UpdateSpriteData();
 	}
-}
 }
