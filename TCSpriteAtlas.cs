@@ -71,6 +71,13 @@ namespace UnityEngine.TextCore
 		//--------------------------------------------------------------------------
 		private Dictionary<string, CachedSpriteSettings> CacheCustomSettings()
 		{
+			if(emptyTexture == null)
+				emptyTexture = new Texture2D(0, 0);
+			var texture = typeof(SpriteAsset).GetField("m_SpriteAtlasTexture", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+				.GetValue(this) as Texture;
+			if(texture == null)
+				SetField(this, "m_SpriteAtlasTexture", emptyTexture);
+
 			var cache = new Dictionary<string, CachedSpriteSettings>();
 			if(spriteGlyphTable == null || spriteCharacterTable == null)
 				return cache;
@@ -163,6 +170,8 @@ namespace UnityEngine.TextCore
 		{
 			SetField(this, "m_Version", "");
 
+			if(emptyTexture == null)
+				emptyTexture = new Texture2D(0, 0);
 			SetSpriteSheet(this, emptyTexture);
 			SetField(this, "m_SpriteCharacterTable", new List<SpriteCharacter>());
 			SetField(this, "m_SpriteGlyphTable", new List<SpriteGlyph>());
@@ -343,7 +352,7 @@ namespace UnityEngine.TextCore
 		//--------------------------------------------------------------------------
 		static private void SetSpriteSheet(SpriteAsset atlas, Texture texture)
 		{
-			typeof(SpriteAsset).GetProperty("spriteSheet", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+			typeof(SpriteAsset).GetProperty(nameof(SpriteAsset.spriteSheet), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
 				.SetValue(atlas, texture);
 		}
 		static internal void SetField(SpriteAsset atlas, string name, object value)
