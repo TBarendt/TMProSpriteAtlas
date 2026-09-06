@@ -237,7 +237,9 @@ namespace UnityEngine.TextCore
 
 					// Add texture and update material
 					SetSpriteSheet(atlasAsset, atlasTexture);
+#if !UNITY_6000_0_OR_NEWER
 					TMPro.ShaderUtilities.GetShaderPropertyIDs();
+#endif
 					Shader shader = Shader.Find("TextMeshPro/Sprite");
 
 					string materialName = ((atlasIndex == 0) ? this.name : spriteAtlas.name + "_" + atlasIndex) + "_material";
