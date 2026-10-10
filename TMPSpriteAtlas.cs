@@ -232,6 +232,9 @@ namespace TMPro
 					atlasAsset.material.name = materialName;
 					AssetDatabase.AddObjectToAsset(atlasAsset.material, this);
 
+					// Repacking between pages must not change sprite typography.
+					atlasAsset.faceInfo = faceInfo;
+
 					// Setup atlas
 					atlasAsset.version = "1.1.0";
 					atlasAsset.hashCode = TMP_TextUtilities.GetSimpleHashCode(atlasAsset.name);
@@ -250,6 +253,7 @@ namespace TMPro
 						if(fallbackCaches.TryGetValue(atlasName, out var fallbackCache))
 							RestoreCustomSettings(atlasAsset, fallbackCache);
 					}
+					EditorUtility.SetDirty(atlasAsset);
 				}
 			}
 
