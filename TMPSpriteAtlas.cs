@@ -309,14 +309,17 @@ namespace TMPro
 					max.x = Mathf.Max(max.x, uv.x);
 					max.y = Mathf.Max(max.y, uv.y);
 				}
-				var UVRect = new Rect(min.x * spriteSheet.width, min.y * spriteSheet.height, (max.x - min.x) * spriteSheet.width, (max.y - min.y) * spriteSheet.height);
-				var scale = new Vector2(spriteSheet.width / spriteSheet.width, spriteSheet.height / spriteSheet.height);
+				// Round texel boundaries before subtraction so UV precision cannot drop an edge pixel.
+				var x = Mathf.RoundToInt(min.x * spriteSheet.width);
+				var y = Mathf.RoundToInt(min.y * spriteSheet.height);
+				var width = Mathf.RoundToInt(max.x * spriteSheet.width) - x;
+				var height = Mathf.RoundToInt(max.y * spriteSheet.height) - y;
 			
 				// Add glyph
 				var glyph = new TMP_SpriteGlyph();
 				glyph.index = spriteIndex;
-				glyph.metrics = new GlyphMetrics(UVRect.width, UVRect.height, 0.0f, UVRect.height * scale.y, UVRect.width * scale.x);
-				glyph.glyphRect = new GlyphRect(UVRect);
+				glyph.metrics = new GlyphMetrics(width, height, 0.0f, height, width);
+				glyph.glyphRect = new GlyphRect(x, y, width, height);
 				glyph.scale = 1.0f;
 				glyph.sprite = sprite;
 				atlas.spriteGlyphTable.Add(glyph);
