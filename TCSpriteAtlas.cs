@@ -197,10 +197,13 @@ namespace UnityEngine.TextCore
 			// Cache customized settings BEFORE clearing
 			var cachedSettings = CacheCustomSettings();
 			var fallbackCaches = new Dictionary<string, Dictionary<string, CachedSpriteSettings>>();
+			var customFallbacks = new List<SpriteAsset>();
 			if(fallbackSpriteAssets != null) {
 				foreach(var fallback in fallbackSpriteAssets) {
 					if(fallback is TCSpriteAtlas fallbackAtlas)
 						fallbackCaches[fallback.name] = fallbackAtlas.CacheCustomSettings();
+					else
+						customFallbacks.Add(fallback);
 				}
 			}
 
@@ -267,6 +270,12 @@ namespace UnityEngine.TextCore
 							RestoreCustomSettings(atlasAsset, fallbackCache);
 					}
 				}
+			}
+
+			// Restore custom fallbacks
+			foreach(var fallback in customFallbacks) {
+				if(fallbackSpriteAssets == null)fallbackSpriteAssets = new ();
+				fallbackSpriteAssets.Add(fallback);
 			}
 
 			// Save
