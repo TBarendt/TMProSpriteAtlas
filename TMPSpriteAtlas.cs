@@ -177,12 +177,15 @@ namespace TMPro
 			// Cache customized settings BEFORE clearing
 			var cachedSettings = CacheCustomSettings();
 			var fallbackCaches = new Dictionary<string, Dictionary<string, CachedSpriteSettings>>();
+			var customFallbacks = new List<TMP_SpriteAsset>();
 			if(fallbackSpriteAssets != null)
 			{
 				foreach(var fallback in fallbackSpriteAssets)
 				{
 					if(fallback is TMPSpriteAtlas fallbackAtlas)
 						fallbackCaches[fallback.name] = fallbackAtlas.CacheCustomSettings();
+					else
+						customFallbacks.Add(fallback);
 				}
 			}
 
@@ -255,6 +258,12 @@ namespace TMPro
 					}
 					EditorUtility.SetDirty(atlasAsset);
 				}
+			}
+
+			// Restore custom fallbacks
+			foreach(var fallback in customFallbacks) {
+				if(fallbackSpriteAssets == null)fallbackSpriteAssets = new ();
+				fallbackSpriteAssets.Add(fallback);
 			}
 
 			// Save
